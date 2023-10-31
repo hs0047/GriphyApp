@@ -15,6 +15,7 @@ import {
   query,
 } from "firebase/firestore";
 import { db } from "../lib/firebase"; // Import your Firestore instance
+import { BiArrowBack, BiSearch } from "react-icons/bi";
 
 interface Gif {
   id: string;
@@ -126,21 +127,29 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4">
-      <div>
-        <button
-          onClick={() => router.push("/favorite")}
-          className="bg-green-500 text-white p-2 rounded-md"
-        >
-          <AiFillHeart />
-        </button>
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 text-white p-2 rounded-md"
-        >
-          <AiOutlineLogout />
-        </button>
+      <div className="flex justify-between items-center mb-4">
+        {" "}
+        {/* Adjust margin bottom */}
+        <div>
+          <button
+            onClick={() => router.push("/dashboard")}
+            className="bg-green-500 text-white p-3 rounded-full"
+          >
+            <BiArrowBack size={24} />
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 text-white p-3 rounded-full"
+          >
+            <AiOutlineLogout size={24} />
+          </button>
+        </div>
       </div>
-      <div className="flex justify-center items-center my-4">
+      <div className="flex justify-between items-center my-4">
+        {" "}
+        {/* Adjust margin top */}
         <input
           type="text"
           value={searchTerm}
@@ -152,13 +161,15 @@ const Dashboard: React.FC = () => {
           onClick={() => handleSearch()}
           className="bg-blue-500 text-white p-2 rounded-md"
         >
-          Search
+          <BiSearch size={24} /> {/* Replace with search icon */}
         </button>
       </div>
-      {isLoading ? (
-        <CircularProgress />
-      ) : (
-        <>
+      <div
+        className="h-[400px] overflow-auto" // Adjust the height as needed
+      >
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {gifs.map((gif) => (
               <div key={gif.id} className="border rounded-md p-2">
@@ -172,24 +183,27 @@ const Dashboard: React.FC = () => {
                 />
                 <button
                   onClick={() => saveToFavorites(gif.images.fixed_width.url)}
+                  className="bg-green-500 text-white p-2 rounded-md mt-2"
                 >
                   <AiFillHeart />
                 </button>
               </div>
             ))}
           </div>
-          <div className="flex justify-center items-center my-4">
-            <Stack spacing={2} justifyContent="center" alignItems="center">
-              <Pagination
-                className="mt-4 mb-4"
-                count={Math.ceil(pagination.total_count / 10)}
-                onChange={(event, page) => handleSearch(page - 1)}
-                shape="rounded"
-                variant="outlined"
-              />
-            </Stack>
-          </div>
-        </>
+        )}
+      </div>
+      {!isLoading && (
+        <div className="flex justify-center items-center my-4">
+          <Stack spacing={2} justifyContent="center" alignItems="center">
+            <Pagination
+              className="mt-4 mb-4"
+              count={Math.ceil(pagination.total_count / 10)}
+              onChange={(event, page) => handleSearch(page - 1)}
+              shape="rounded"
+              variant="outlined"
+            />
+          </Stack>
+        </div>
       )}
     </div>
   );

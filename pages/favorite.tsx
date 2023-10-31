@@ -78,33 +78,40 @@ const Favorite: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4">
-      <div>
-        <button
-          onClick={() => router.push("/dashboard")}
-          className="bg-green-500 text-white p-2 rounded-md"
-        >
-          <BiArrowBack />
-        </button>
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 text-white p-2 rounded-md"
-        >
-          <AiOutlineLogout />
-        </button>
+      <div className="flex justify-between items-center">
+        <div className="mb-5">
+          <button
+            onClick={() => router.push("/dashboard")}
+            className="bg-green-500 text-white p-3 rounded-full"
+          >
+            <BiArrowBack size={24} />
+          </button>
+        </div>
+        <div>
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 text-white p-3 rounded-full"
+          >
+            <AiOutlineLogout size={24} />
+          </button>
+        </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {gifs.map((gif) => (
-          <div key={gif.id} className="border rounded-md p-2">
+          <div key={gif.id} className="border rounded-md p-1">
             <Image
               src={gif.url}
-              width={200}
-              height={200}
+              width={250}
+              height={100}
               alt="Favorite GIF"
               unoptimized={true}
               onClick={() => copyToClipboard(gif.url)}
             />
-            <button onClick={() => handleDelete(gif.id)}>
-              <AiFillDelete />
+            <button
+              onClick={() => handleDelete(gif.id)}
+              className="bg-red-500 text-white p-2 rounded-full mt-2"
+            >
+              <AiFillDelete size={20} />
             </button>
           </div>
         ))}

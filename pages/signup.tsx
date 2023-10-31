@@ -8,12 +8,11 @@ import Link from "next/link";
 const Signup: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [reconfirmPassword, setReconfirmPassword] = useState<string>(""); // New state
+  const [reconfirmPassword, setReconfirmPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const router = useRouter();
 
-  // Email regex pattern
   const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
   const handleSignup = async (e: FormEvent) => {
@@ -25,7 +24,6 @@ const Signup: React.FC = () => {
     }
 
     if (password !== reconfirmPassword) {
-      // New check
       setErrorMessage("Password and Confirm Password do not match.");
       return;
     }
@@ -48,39 +46,55 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSignup}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Reconfirm Password" // New input field
-          value={reconfirmPassword}
-          onChange={(e) => setReconfirmPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Sign Up</button>
-      </form>
-      {errorMessage && <p>{errorMessage}</p>}
-      <nav>
-        Already a user ?{"  "}
-        <Link href="/">
-          <u>Login</u>
-        </Link>
-      </nav>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
+        <h2 className="text-2xl font-semibold mb-6">Sign Up</h2>
+        <form onSubmit={handleSignup}>
+          <div className="mb-4">
+            <input
+              className="w-full p-2 border rounded-lg"
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <input
+              className="w-full p-2 border rounded-lg"
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <input
+              className="w-full p-2 border rounded-lg"
+              type="password"
+              placeholder="Reconfirm Password"
+              value={reconfirmPassword}
+              onChange={(e) => setReconfirmPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button
+            className="w-full bg-blue-500 text-white font-semibold p-2 rounded-lg"
+            type="submit"
+          >
+            Sign Up
+          </button>
+        </form>
+        {errorMessage && <p className="text-red-500 mt-4">{errorMessage}</p>}
+        <nav className="mt-4">
+          Already a user?{" "}
+          <Link href="/">
+            <span className="text-blue-500 underline">Login</span>
+          </Link>
+        </nav>
+      </div>
     </div>
   );
 };
