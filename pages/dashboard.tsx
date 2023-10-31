@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import { CircularProgress, debounce } from "@mui/material";
 import { useRouter } from "next/router";
 import { UserProvider, useUser } from "../contexts/UserContext";
-import { AiFillHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineLogout } from "react-icons/ai";
 import {
   collection,
   addDoc,
@@ -47,10 +47,6 @@ const Dashboard: React.FC = () => {
   const handleLogout = () => {
     logout();
     router.push("/");
-  };
-
-  const showUserData = () => {
-    console.log(user);
   };
 
   const handleSearch = async (page = 0) => {
@@ -135,20 +131,13 @@ const Dashboard: React.FC = () => {
           onClick={() => router.push("/favorite")}
           className="bg-green-500 text-white p-2 rounded-md"
         >
-          Favorite
           <AiFillHeart />
         </button>
         <button
           onClick={handleLogout}
           className="bg-red-500 text-white p-2 rounded-md"
         >
-          Logout
-        </button>
-        <button
-          onClick={showUserData}
-          className="bg-yellow-500 text-white p-2 rounded-md"
-        >
-          Show User Data
+          <AiOutlineLogout />
         </button>
       </div>
       <div className="flex justify-center items-center my-4">
