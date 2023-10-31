@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
-import { CircularProgress, debounce } from "@mui/material";
-import { useRouter } from "next/router";
-import { UserProvider, useUser } from "../contexts/UserContext";
-import { AiFillHeart, AiOutlineLogout } from "react-icons/ai";
+// Import necessary libraries and modules
+import { useEffect, useState } from "react"; // Hooks for side effects and state management
+import Image from "next/image"; // Next.js optimized image component
+import Pagination from "@mui/material/Pagination"; // Pagination component from Material-UI
+import Stack from "@mui/material/Stack"; // Stack layout component from Material-UI
+import { CircularProgress, debounce } from "@mui/material"; // Circular progress for loading and debounce function
+import { useRouter } from "next/router"; // useRouter for client-side routing in Next.js
+import { UserProvider, useUser } from "../contexts/UserContext"; // Context for user management
+import { AiFillHeart, AiOutlineLogout } from "react-icons/ai"; // Icons for heart and logout
 import {
   collection,
   addDoc,
@@ -13,10 +14,11 @@ import {
   getDocs,
   where,
   query,
-} from "firebase/firestore";
-import { db } from "../lib/firebase"; // Import your Firestore instance
-import {  BiSearch } from "react-icons/bi";
+} from "firebase/firestore"; // Firestore methods for database operations
+import { db } from "../lib/firebase"; // Firestore instance
+import { BiSearch } from "react-icons/bi"; // Search icon
 
+// Define the Gif and Pagination interfaces
 interface Gif {
   id: string;
   title: string;
@@ -33,7 +35,9 @@ interface Pagination {
   offset: number;
 }
 
+// Define the Dashboard component
 const Dashboard: React.FC = () => {
+  // State variables for search term, gifs, pagination, and loading status
   const [searchTerm, setSearchTerm] = useState("");
   const [gifs, setGifs] = useState<Gif[]>([]);
   const [pagination, setPagination] = useState<Pagination>({
@@ -41,19 +45,20 @@ const Dashboard: React.FC = () => {
     count: 0,
     offset: 0,
   });
-  const [isLoading, setIsLoading] = useState(false); // State for loading status
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { user, logout } = useUser(); // Extract the user from the useUser hook
+  const { user, logout } = useUser(); // Extract user and logout function from context
 
+  // Function to handle user logout
   const handleLogout = () => {
     logout();
     router.push("/");
   };
 
+  // Function to handle GIF search
   const handleSearch = async (page = 0) => {
-    setIsLoading(true); // Set loading to true when starting the fetch
-
-    const API_KEY = "GlVGYHkr3WSBnllca54iNt0yFbjz7L65"; // Replace with your Giphy API key
+    setIsLoading(true);
+    const API_KEY = "GlVGYHkr3WSBnllca54iNt0yFbjz7L65"; // Giphy API key
     const LIMIT = 10;
     const offset = page * LIMIT;
 
@@ -73,25 +78,28 @@ const Dashboard: React.FC = () => {
     } else {
       console.error("Unexpected API response structure:", data);
     }
-    setIsLoading(false); // Set loading to false after fetching data
+    setIsLoading(false);
   };
 
+  // Effect to handle search term changes
   useEffect(() => {
     if (searchTerm) {
       debouncedHandleSearch();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm]);
 
+  // Effect to handle user authentication status
   useEffect(() => {
-    // If user is not logged in, redirect to home page
     if (!user) {
       router.push("/");
     }
   }, [user, router]);
 
-  const debouncedHandleSearch = debounce(handleSearch, 300); // Debounce the search function
+  // Debounce the search function to limit the number of API calls
+  const debouncedHandleSearch = debounce(handleSearch, 300);
 
+  // Function to save a GIF to user's favorites
   const saveToFavorites = async (gifUrl: String) => {
     if (!user) {
       alert("You need to be logged in to save favorites.");
@@ -102,16 +110,13 @@ const Dashboard: React.FC = () => {
       const userFavouriteDocRef = doc(favouriteCollectionRef, user.uid);
       const gifsCollectionRef = collection(userFavouriteDocRef, "gifs");
 
-      // Query the gifs sub-collection for the gifUrl
       const querySnapshot = await getDocs(
         query(gifsCollectionRef, where("url", "==", gifUrl))
       );
 
       if (!querySnapshot.empty) {
-        // The GIF URL already exists in the sub-collection
         alert("GIF already added to favorites!");
       } else {
-        // The GIF URL doesn't exist, so you can add it
         await addDoc(gifsCollectionRef, { url: gifUrl });
         alert("GIF added to favorites!");
       }
@@ -120,12 +125,14 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  // Function to copy GIF URL to clipboard
   const copyToClipboard = (url: string) => {
     navigator.clipboard.writeText(url).then(() => {
       alert("Link copied!");
     });
   };
 
+  // Render the dashboard UI
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex justify-between items-center p-4">
@@ -158,7 +165,7 @@ const Dashboard: React.FC = () => {
           onClick={() => handleSearch()}
           className="bg-blue-500 text-white p-2 rounded-md"
         >
-          <BiSearch size={24} /> {/* Replace with search icon */}
+          <BiSearch size={24} />
         </button>
       </div>
       <div className="flex-grow overflow-y-auto">
@@ -193,8 +200,6 @@ const Dashboard: React.FC = () => {
       </div>
       {!isLoading && (
         <div className="p-4">
-          {" "}
-          {/* Pagination at the bottom */}
           <Stack spacing={2} justifyContent="center" alignItems="center">
             <Pagination
               count={Math.ceil(pagination.total_count / 10)}
@@ -209,4 +214,5 @@ const Dashboard: React.FC = () => {
   );
 };
 
+// Export the Dashboard component for use in other parts of the application
 export default Dashboard;

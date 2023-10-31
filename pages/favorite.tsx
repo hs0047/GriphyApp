@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { useUser } from "../contexts/UserContext";
-import { AiFillDelete, AiOutlineLogout } from "react-icons/ai";
-import { BiArrowBack } from "react-icons/bi";
-import { db } from "../lib/firebase";
+// Import necessary libraries and modules
+import { useEffect, useState } from "react"; // Hooks for side effects and state management
+import Image from "next/image"; // Next.js optimized image component
+import { useRouter } from "next/router"; // useRouter for client-side routing in Next.js
+import { useUser } from "../contexts/UserContext"; // Context for user management
+import { AiFillDelete, AiOutlineLogout } from "react-icons/ai"; // Icons for delete and logout
+import { BiArrowBack } from "react-icons/bi"; // Icon for back arrow
+import { db } from "../lib/firebase"; // Firestore instance
 
 import {
   collection,
@@ -13,18 +14,22 @@ import {
   deleteDoc,
   query,
   limit,
-} from "firebase/firestore";
+} from "firebase/firestore"; // Firestore methods for database operations
 
+// Define the Favorite component
 const Favorite: React.FC = () => {
+  // State variable for gifs
   const [gifs, setGifs] = useState<{ id: string; url: string }[]>([]);
   const router = useRouter();
-  const { user, logout } = useUser();
+  const { user, logout } = useUser(); // Extract user and logout function from context
 
+  // Function to handle user logout
   const handleLogout = () => {
     logout();
     router.push("/");
   };
 
+  // Effect to fetch user's favorite GIFs
   useEffect(() => {
     if (!user) {
       router.push("/");
@@ -48,15 +53,17 @@ const Favorite: React.FC = () => {
     };
 
     fetchFavorites();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+  // Function to copy GIF URL to clipboard
   const copyToClipboard = (url: string) => {
     navigator.clipboard.writeText(url).then(() => {
       alert("Link copied!");
     });
   };
 
+  // Function to delete a GIF from user's favorites
   const handleDelete = async (gifId: string) => {
     if (!user) {
       alert("You need to be logged in to save favorites.");
@@ -77,6 +84,7 @@ const Favorite: React.FC = () => {
     }
   };
 
+  // Render the favorite GIFs UI
   return (
     <div className="container mx-auto px-4">
       <div className="flex justify-between items-center">
@@ -126,4 +134,5 @@ const Favorite: React.FC = () => {
   );
 };
 
+// Export the Favorite component for use in other parts of the application
 export default Favorite;
