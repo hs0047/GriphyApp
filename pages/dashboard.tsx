@@ -126,16 +126,14 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4">
-      <div className="flex justify-between items-center mb-4">
-        {" "}
-        {/* Adjust margin bottom */}
+    <div className="min-h-screen flex flex-col">
+      <div className="flex justify-between items-center p-4">
         <div>
           <button
-            onClick={() => router.push("/dashboard")}
+            onClick={() => router.push("/favorite")}
             className="bg-green-500 text-white p-3 rounded-full"
           >
-            <BiArrowBack size={24} />
+            <AiFillHeart size={24} />
           </button>
         </div>
         <div>
@@ -147,9 +145,7 @@ const Dashboard: React.FC = () => {
           </button>
         </div>
       </div>
-      <div className="flex justify-between items-center my-4">
-        {" "}
-        {/* Adjust margin top */}
+      <div className="flex justify-between items-center my-4 p-4">
         <input
           type="text"
           value={searchTerm}
@@ -164,39 +160,42 @@ const Dashboard: React.FC = () => {
           <BiSearch size={24} /> {/* Replace with search icon */}
         </button>
       </div>
-      <div
-        className="h-[400px] overflow-auto" // Adjust the height as needed
-      >
+      <div className="flex-grow overflow-y-auto">
         {isLoading ? (
           <CircularProgress />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5  gap-4">
             {gifs.map((gif) => (
-              <div key={gif.id} className="border rounded-md p-2">
+              <div
+                key={gif.id}
+                className="border rounded-md relative p-2"
+                style={{ width: "250px", height: "250px" }}
+              >
+                <button
+                  onClick={() => saveToFavorites(gif.images.fixed_width.url)}
+                  className="bg-green-500 text-white p-2 rounded-md absolute top-0 right-0"
+                >
+                  <AiFillHeart />
+                </button>
                 <Image
                   src={gif.images.fixed_width.url}
-                  width={200}
-                  height={200}
+                  width={250}
+                  height={250}
                   alt={gif.title}
                   unoptimized={true}
                   onClick={() => copyToClipboard(gif.images.fixed_width.url)}
                 />
-                <button
-                  onClick={() => saveToFavorites(gif.images.fixed_width.url)}
-                  className="bg-green-500 text-white p-2 rounded-md mt-2"
-                >
-                  <AiFillHeart />
-                </button>
               </div>
             ))}
           </div>
         )}
       </div>
       {!isLoading && (
-        <div className="flex justify-center items-center my-4">
+        <div className="p-4">
+          {" "}
+          {/* Pagination at the bottom */}
           <Stack spacing={2} justifyContent="center" alignItems="center">
             <Pagination
-              className="mt-4 mb-4"
               count={Math.ceil(pagination.total_count / 10)}
               onChange={(event, page) => handleSearch(page - 1)}
               shape="rounded"

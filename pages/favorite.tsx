@@ -96,20 +96,25 @@ const Favorite: React.FC = () => {
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5  gap-4">
         {gifs.map((gif) => (
-          <div key={gif.id} className="border rounded-md p-1">
+          <div
+            key={gif.id}
+            className="border rounded-md relative p-2"
+            style={{ width: "200px", height: "200px" }}
+          >
             <Image
               src={gif.url}
-              width={250}
-              height={100}
+              width={200}
+              height={200}
               alt="Favorite GIF"
               unoptimized={true}
               onClick={() => copyToClipboard(gif.url)}
             />
             <button
               onClick={() => handleDelete(gif.id)}
-              className="bg-red-500 text-white p-2 rounded-full mt-2"
+              className="bg-red-500 text-white p-2 rounded-full absolute top-0 right-0"
+              style={{ zIndex: 1 }} // Add zIndex to place it on top of the image
             >
               <AiFillDelete size={20} />
             </button>
