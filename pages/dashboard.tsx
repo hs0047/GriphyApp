@@ -15,7 +15,7 @@ import {
   query,
 } from "firebase/firestore";
 import { db } from "../lib/firebase"; // Import your Firestore instance
-import { BiArrowBack, BiSearch } from "react-icons/bi";
+import {  BiSearch } from "react-icons/bi";
 
 interface Gif {
   id: string;
