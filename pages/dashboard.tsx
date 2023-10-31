@@ -80,6 +80,7 @@ const Dashboard: React.FC = () => {
     if (searchTerm) {
       debouncedHandleSearch();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm]);
 
   useEffect(() => {

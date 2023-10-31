@@ -48,6 +48,7 @@ const Favorite: React.FC = () => {
     };
 
     fetchFavorites();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const copyToClipboard = (url: string) => {
