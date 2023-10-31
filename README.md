@@ -1,40 +1,79 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# GriphyApp
 
+GriphyApp is a Next.js application designed with Firebase Authentication and GIPHY API integration. The primary feature of this application is a GIF search functionality powered by the GIPHY API. Users can search for GIFs, view them in a gallery format, and mark their favorite GIFs. The application also offers additional features like hot searching and loading animations.
+
+## Screenshots
+
+### Login
+![Screenshot 1](images/screenshot1.png)
+
+### Sign Up
+![Screenshot 2](images/screenshot2.png)
+
+### Home
+![Screenshot 3](images/screenshot3.png)
+
+### Favourite
+![Screenshot 4](images/screenshot4.png)
+
+## Features
+
+### Firebase Authentication
+- Users can log in using their email and password or sign up for a new account.
+
+### GIF Search and Gallery
+- Search for GIFs using the GIPHY API and view them in a gallery format.
+
+### Marking Favorites
+- Users can mark individual GIFs as favorites and view them in a dedicated section on the home page.
+
+### Hot Search
+- GIFs update dynamically as the user types, eliminating the need to press a search button.
+
+### Loading Animations
+- Enhance the user experience with loading animations during data fetching.
+  
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js v14 or higher
+- Firebase account for authentication setup
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/hs0047/GriphyApp.git
+   
+2. Navigate to the project directory:
+   ```bash
+   cd GriphyApp
+   
+3. Install the required dependencies:
+   ```bash
+    npm install
+   
+4. Start the application:
+   ```bash
+    npm start
+## Usage
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Authentication**: 
+  - Log in using your email and password or sign up for a new account.
+  
+- **Search GIFs**: 
+  - Enter your desired keywords in the search bar to view a gallery of GIFs.
+  
+- **Mark Favorites**: 
+  - Click on the favorite icon on individual GIFs to add them to your favorites.
+  
+- **View Favorites**: 
+  - Navigate to the "favorites" section on the home page to view your selected GIFs.
+    
+## Contributing
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. Ensure you follow the project's code style and run tests if applicable before submitting a pull request.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## License
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
