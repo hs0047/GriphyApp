@@ -1,42 +1,52 @@
-import { useState, FormEvent } from "react";
-import { useRouter } from "next/router";
-import { auth } from "../lib/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { FirebaseError } from "firebase/app";
-import Link from "next/link";
+// Import necessary libraries and modules
+import { useState, FormEvent } from "react"; // useState for state management, FormEvent for form event types
+import { useRouter } from "next/router"; // useRouter for client-side routing in Next.js
+import { auth } from "../lib/firebase"; // Import the authentication instance from Firebase configuration
+import { createUserWithEmailAndPassword } from "firebase/auth"; // Method to create a new user using email and password
+import { FirebaseError } from "firebase/app"; // Type for Firebase-specific errors
+import Link from "next/link"; // Component for client-side navigation in Next.js
 
+// Define the Signup component
 const Signup: React.FC = () => {
+  // State variables for email, password, reconfirm password, and error messages
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [reconfirmPassword, setReconfirmPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const router = useRouter();
+  const router = useRouter(); // Initialize the router for navigation
 
+  // Regular expression pattern to validate email addresses
   const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
+  // Function to handle the signup process
   const handleSignup = async (e: FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission
 
+    // Validate email format
     if (!email.match(emailPattern)) {
       setErrorMessage("Invalid email format.");
       return;
     }
 
+    // Check if passwords match
     if (password !== reconfirmPassword) {
       setErrorMessage("Password and Confirm Password do not match.");
       return;
     }
 
+    // Ensure password length is sufficient
     if (password.length < 6) {
       setErrorMessage("Password must be at least 6 characters long.");
       return;
     }
 
     try {
+      // Try to create a new user with the provided email and password
       await createUserWithEmailAndPassword(auth, email, password);
-      router.push("/dashboard"); // Redirect to dashboard or another page after successful signup
+      router.push("/dashboard"); // Navigate to the dashboard upon successful signup
     } catch (error) {
+      // Handle potential errors during the signup process
       if (error instanceof FirebaseError) {
         setErrorMessage(error.message);
       } else {
@@ -45,6 +55,7 @@ const Signup: React.FC = () => {
     }
   };
 
+  // Render the signup form
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
@@ -99,4 +110,5 @@ const Signup: React.FC = () => {
   );
 };
 
+// Export the Signup component for use in other parts of the application
 export default Signup;
