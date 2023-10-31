@@ -1,31 +1,63 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+// contexts/userContext.tsx
+
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 import { auth } from "../lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
+interface User {
+  uid: string;
+  email: string;
+  // Add other profile fields as needed
+}
+
 interface UserContextProps {
-  user: any;
-  setUser: React.Dispatch<React.SetStateAction<any>>;
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  logout: () => void;
 }
 
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
-export const UserProvider: React.FC = ({ children }) => {
-  const [user, setUser] = useState(null);
+interface UserProviderProps {
+  children: ReactNode;
+}
+
+export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
+    // Set up the Firebase authentication state listener
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        setUser({
+          uid: firebaseUser.uid,
+          email: firebaseUser.email!,
+          // Add other fields as needed
+        });
       } else {
         setUser(null);
       }
     });
 
+    // Cleanup the listener on component unmount
     return () => unsubscribe();
   }, []);
 
+  const logout = () => {
+    // Firebase logout logic
+    auth.signOut().then(() => {
+      setUser(null);
+    });
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, logout }}>
       {children}
     </UserContext.Provider>
   );
